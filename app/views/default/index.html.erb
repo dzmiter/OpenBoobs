@@ -1,0 +1,32 @@
+<style>
+  img{
+    position: absolute;
+    visibility:hidden;
+	
+}
+
+#photo div {
+   position: relative;
+   width: 100%; /* for IE 6 */
+   
+}
+h1 {
+   position: absolute;
+   background-color: red;
+   color: white;
+   visibility: hidden;
+}
+
+
+</style>
+
+
+<div id="photos">
+<% @realPhotos.each { |i| %>
+ <div class="image">
+<img  src="<%= i[0] %>" id="girl<%= @length %>" />
+<h1 id="span<%= @length%>"></h1>
+  </div>
+<% @length+=1 %>
+<% } %>
+</div>

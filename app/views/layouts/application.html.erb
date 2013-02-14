@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xml:lang="en" lang="en">
+    <head >
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+        <title>OpenBoobs</title>
+        <%= stylesheet_link_tag 'style' %>
+        <script>
+
+          var x = -1;
+
+    function Image(zInd)
+    {
+
+      this.ZInd = zInd;
+    }
+
+    var Images = [];
+
+    function Start()
+    {
+        var Timer = setTimeout(
+          function()
+          {
+
+            var zInd = 0;
+            var check = false;
+            for (var i = 1 ; i <= 20 ; i++)
+              {
+
+                         Images.push(
+
+                        new Image
+                        (
+                            zInd
+                         )
+
+
+                        );
+
+
+                document.getElementById('span'+i).style.visibility = document.getElementById('girl'+i).style.visibility = 'visible';
+                document.getElementById('span'+i).style.zIndex = document.getElementById('girl'+i).style.zIndex = parseInt(Math.cos((zInd*Math.PI/180) - Math.PI/2)*300);
+                document.getElementById('girl'+i).style.height = document.getElementById('girl'+i).style.width = Math.cos((zInd*Math.PI/180) - Math.PI/2)*150 + 300+'px';
+                document.getElementById('girl'+i).style.left = Math.cos((zInd*Math.PI/180))*500 + 510 +'px';
+                document.getElementById('girl'+i).style.top = Math.sin(zInd*Math.PI/180)*40 + 140+'px';
+                document.getElementById('span'+i).style.top = Math.sin(zInd*Math.PI/180)*40 + 140 + Math.cos((zInd*Math.PI/180) - Math.PI/2)*150 + 300 - 40 + 'px';
+                document.getElementById('span'+i).style.left = Math.cos((zInd*Math.PI/180))*500 + 510 + Math.cos((zInd*Math.PI/180) - Math.PI/2)*150 + 300 - 60 + 'px';
+                zInd+=18;
+
+
+              }
+              document.getElementById('t').value = Images[3].ZInd;
+          }
+          ,5
+        );
+    }
+
+    document.onmousedown = function(e)
+    {
+      e = e || window.event;
+      x = e.clientX;
+    }
+
+
+
+    document.onmouseup = function(e)
+    {
+      x = -1;
+    }
+
+    document.onmousemove = function(e)
+    {
+      e = e || window.event;
+      if (x != -1)
+        {
+
+            var direction = e.clientX - x;
+             x = e.clientX;
+
+
+
+                for (var i = 1 ; i <= 20 ; i++)
+                  {
+                    
+                      Images[i-1].ZInd-= direction;
+                      document.getElementById('span'+i).style.zIndex = document.getElementById('girl'+i).style.zIndex = parseInt(Math.cos((Images[i-1].ZInd*Math.PI/180) - Math.PI/2)*300);
+                      document.getElementById('girl'+i).style.height = document.getElementById('girl'+i).style.width = Math.cos((Images[i-1].ZInd*Math.PI/180) - Math.PI/2)*150 + 300+'px';
+                      document.getElementById('girl'+i).style.left = Math.cos((Images[i-1].ZInd*Math.PI/180))*500 + 510 +'px';
+                      document.getElementById('girl'+i).style.top = Math.sin(Images[i-1].ZInd*Math.PI/180)*40 + 140+'px';
+                      document.getElementById('span'+i).style.top = Math.sin(Images[i-1].ZInd*Math.PI/180)*40 + 140 + Math.cos((Images[i-1].ZInd*Math.PI/180) - Math.PI/2)*150 + 300 - 40 + 'px';
+                      document.getElementById('span'+i).style.left = Math.cos((Images[i-1].ZInd*Math.PI/180))*500 + 510 + Math.cos((Images[i-1].ZInd*Math.PI/180) - Math.PI/2)*150 + 300 - 60 + 'px';
+               
+
+                  }
+
+        }
+    }
+</script>
+    </head>
+    <body onload="Start();">
+        <div id="content">
+            <%= yield %>
+        </div>
+    </body>
+</html>
