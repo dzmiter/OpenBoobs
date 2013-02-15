@@ -1,5 +1,9 @@
 source 'http://rubygems.org'
-gem 'rmagick', '>=1.12.0' # Add the rmagick gem to the module search path
+
+gem 'rmagick', '>=1.12.0' 
+
+# Add the rmagick gem to the module search path
+
 gem 'rails', '3.0.9'
 
 # Bundle edge Rails instead:
