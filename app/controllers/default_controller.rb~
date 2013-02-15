@@ -2,9 +2,11 @@ class DefaultController < ApplicationController
 
 require 'open-uri'
 require 'RMagick'
+require "rubygems"
+require "json"
 
 def index
-@OpenBoobs = open("http://oboobs.ru/"){
+@OpenBoobs = open("http://oboobs.ru"){
 |f|f.read}
 @likes = @OpenBoobs.scan(/<div id\=\"divrank\d+\"\>(\d+)\<\/div\>/)
 @photos = @OpenBoobs.scan(/<img src="(.*)" alt=".*" width=".*"/)
@@ -12,16 +14,21 @@ def index
 @length = 1
 
 @realPhotos = []
+@changedPhotos = []
 
-#File.open("./likes", "w"){|file| file.write(@realPhotos)}
+File.open("./likes", "w"){|file| file.write(@likes)}
 
 @photos.each_index { |i|
 	@realPhotos [i] = []
+	@changedPhotos [i] = []
 	photo = @photos[i].first
 	
-	@realPhotos[i][0] ="./assets/" +  File.basename(photo)	
+	@realPhotos[i][0] = "http://media.oboobs.ru/boobs_preview/" +  File.basename(photo)	
 	
-	writeOut = File.new("./app/assets/images/" + File.basename(photo), "wb")
+	writeOut = File.new("./public/images/" + File.basename(photo), "wb")
+
+	@changedPhotos[i][0] = File.basename(photo)#"./app/assets/images/" + File.basename(photo)
+
 	writeOut.write(open(photo).read) 
 	writeOut.close
 	
@@ -35,9 +42,20 @@ def index
 	# self.font_weight = Magick::BoldWeight
 	# self.font_stretch = Magick::UltraCondensedStretch
 	#end
+	require 'RMagick'
+
+	label = Magick::ImageList.new("./public/images/" + File.basename(photo))
+	text = Magick::Draw.new
+	text.annotate(label, 0, 0, 0, 60, /\d+/.match(@likes[i].to_s).to_s) {
+	    self.gravity = Magick::SouthGravity
+	    self.pointsize = 48
+	    self.stroke = 'black'
+	    self.fill = '#FAFAFA'
+	    self.font_weight = Magick::BoldWeight
+	}
+	label.write("./public/images/" + File.basename(photo))
 }
 
-File.open("./likes", "w"){|file| file.write(@realPhotos)}
 
 end
 end

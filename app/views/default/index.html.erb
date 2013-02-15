@@ -22,11 +22,13 @@ h1 {
 
 
 <div id="photos">
-<% @realPhotos.each { |i| %>
+<% @changedPhotos.each { |i| %>
  <div class="image">
-<img  src="<%= i[0] %>" id="girl<%= @length %>" />
+<!--<img  src="<%= i[0] %>" id="girl<%= @length %>" />-->
+<%= image_tag i[0], :id => ("girl"+@length.to_s) %>
 <h1 id="span<%= @length%>"></h1>
   </div>
 <% @length+=1 %>
 <% } %>
 </div>
+
